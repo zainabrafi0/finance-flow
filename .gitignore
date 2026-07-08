@@ -54,3 +54,6 @@ temp/
 done.txt
 aws_actions.txt
 
+# Security keys & certificates
+finance-flow-key.pem
+*.pem
