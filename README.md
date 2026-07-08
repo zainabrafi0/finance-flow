@@ -1,4 +1,4 @@
-# FinanceFlow — Personal Finance Dashboard Monorepo
+# FinanceFlow — Personal Finance Dashboard 
 
 FinanceFlow is a premium, real-time personal finance manager built using a modern TypeScript stack. It enables users to control their portfolios, manage multi-currency accounts, create dynamic budgets with live alerts, track savings goals, and automate recurring transaction plans.
 
