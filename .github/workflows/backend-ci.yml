@@ -183,13 +183,25 @@ jobs:
             PORT=3001
             MONGODB_URI="${{ secrets.MONGODB_URI }}"
             JWT_SECRET="${{ secrets.JWT_SECRET }}"
+            JWT_EXPIRATION="${{ secrets.JWT_EXPIRATION }}"
             JWT_REFRESH_SECRET="${{ secrets.JWT_REFRESH_SECRET }}"
+            JWT_REFRESH_EXPIRATION="${{ secrets.JWT_REFRESH_EXPIRATION }}"
+            CLOUDINARY_CLOUD_NAME="${{ secrets.CLOUDINARY_CLOUD_NAME }}"
+            CLOUDINARY_API_KEY="${{ secrets.CLOUDINARY_API_KEY }}"
+            CLOUDINARY_API_SECRET="${{ secrets.CLOUDINARY_API_SECRET }}"
             SMTP_HOST="${{ secrets.SMTP_HOST }}"
             SMTP_PORT="${{ secrets.SMTP_PORT }}"
             SMTP_USER="${{ secrets.SMTP_USER }}"
             SMTP_PASS="${{ secrets.SMTP_PASS }}"
             REDIS_URL="${{ secrets.REDIS_URL }}"
             EOF
+            
+            # Apply defaults for config validation requirements if they are not in secrets
+            [ -z "${{ secrets.JWT_EXPIRATION }}" ] && echo "JWT_EXPIRATION=7d" >> .env
+            [ -z "${{ secrets.JWT_REFRESH_EXPIRATION }}" ] && echo "JWT_REFRESH_EXPIRATION=7d" >> .env
+            [ -z "${{ secrets.CLOUDINARY_CLOUD_NAME }}" ] && echo "CLOUDINARY_CLOUD_NAME=jvyj59qg" >> .env
+            [ -z "${{ secrets.CLOUDINARY_API_KEY }}" ] && echo "CLOUDINARY_API_KEY=277283352881982" >> .env
+            [ -z "${{ secrets.CLOUDINARY_API_SECRET }}" ] && echo "CLOUDINARY_API_SECRET=tiZQQ-XEp-YMlrbo7xQrn9Sq98c" >> .env
             
             # Secure file access permissions (owner read/write only)
             chmod 600 .env
