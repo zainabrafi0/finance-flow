@@ -43,7 +43,9 @@ export class RecurringController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a specific recurring transaction parameters' })
+  @ApiOperation({
+    summary: 'Update a specific recurring transaction parameters',
+  })
   update(
     @CurrentUser() user: any,
     @Param('id') id: string,

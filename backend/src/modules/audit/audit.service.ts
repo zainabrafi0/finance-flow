@@ -34,7 +34,9 @@ export class AuditService {
         .limit(limit)
         .skip(skip)
         .exec(),
-      this.auditLogModel.countDocuments({ userId: new Types.ObjectId(userId) }).exec(),
+      this.auditLogModel
+        .countDocuments({ userId: new Types.ObjectId(userId) })
+        .exec(),
     ]);
 
     return { data, total, limit, skip };

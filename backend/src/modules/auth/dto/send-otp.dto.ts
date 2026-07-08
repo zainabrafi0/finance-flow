@@ -6,7 +6,10 @@ export class SendOtpDto {
   @IsEmail()
   email!: string;
 
-  @ApiProperty({ example: 'registration', enum: ['registration', 'reset-password'] })
+  @ApiProperty({
+    example: 'registration',
+    enum: ['registration', 'reset-password'],
+  })
   @IsNotEmpty()
   @IsString()
   @IsEnum(['registration', 'reset-password'])

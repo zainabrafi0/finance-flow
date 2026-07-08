@@ -21,6 +21,4 @@ export class Budget extends Document {
 }
 
 export const BudgetSchema = SchemaFactory.createForClass(Budget);
-BudgetSchema.index(
-  { userId: 1, category: 1, month: 1, year: 1 }
-);
+BudgetSchema.index({ userId: 1, category: 1, month: 1, year: 1 });

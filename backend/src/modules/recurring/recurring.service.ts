@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { RecurringTransaction } from './schemas/recurring-transaction.schema';
@@ -14,7 +18,10 @@ export class RecurringService {
     @InjectModel(Wallet.name) private walletModel: Model<Wallet>,
   ) {}
 
-  async create(userId: string, dto: CreateRecurringDto): Promise<RecurringTransaction> {
+  async create(
+    userId: string,
+    dto: CreateRecurringDto,
+  ): Promise<RecurringTransaction> {
     const wallet = await this.walletModel.findOne({
       _id: new Types.ObjectId(dto.walletId),
       userId: new Types.ObjectId(userId),

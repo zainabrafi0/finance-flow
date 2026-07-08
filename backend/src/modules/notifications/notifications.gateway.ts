@@ -17,7 +17,9 @@ import { Logger } from '@nestjs/common';
   },
   namespace: 'notifications',
 })
-export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class NotificationsGateway
+  implements OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer()
   server!: Server;
 
@@ -30,9 +32,13 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
       const socketIds = this.activeClients.get(userId) || [];
       socketIds.push(client.id);
       this.activeClients.set(userId, socketIds);
-      this.logger.log(`Client connected: ${client.id} associated with User: ${userId}`);
+      this.logger.log(
+        `Client connected: ${client.id} associated with User: ${userId}`,
+      );
     } else {
-      this.logger.log(`Client connected without user association: ${client.id}`);
+      this.logger.log(
+        `Client connected without user association: ${client.id}`,
+      );
     }
   }
 
@@ -53,7 +59,10 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
   }
 
   @SubscribeMessage('register')
-  handleRegister(@ConnectedSocket() client: Socket, @MessageBody() data: { userId: string }) {
+  handleRegister(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { userId: string },
+  ) {
     if (data && data.userId) {
       const socketIds = this.activeClients.get(data.userId) || [];
       if (!socketIds.includes(client.id)) {
@@ -74,7 +83,9 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
       }
       this.logger.log(`Sent notification '${eventName}' to User: ${userId}`);
     } else {
-      this.logger.warn(`User ${userId} is offline. Notification '${eventName}' was not delivered via WebSocket.`);
+      this.logger.warn(
+        `User ${userId} is offline. Notification '${eventName}' was not delivered via WebSocket.`,
+      );
     }
   }
 

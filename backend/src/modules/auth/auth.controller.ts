@@ -96,8 +96,12 @@ export class AuthController {
   @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @Post('profile')
-  @ApiOperation({ summary: 'Update user profile (first name, last name, and profile picture)' })
-  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 5 * 1024 * 1024 } }))
+  @ApiOperation({
+    summary: 'Update user profile (first name, last name, and profile picture)',
+  })
+  @UseInterceptors(
+    FileInterceptor('file', { limits: { fileSize: 5 * 1024 * 1024 } }),
+  )
   async updateProfile(
     @CurrentUser() user: any,
     @Body() body: UpdateProfileDto,
@@ -105,9 +109,13 @@ export class AuthController {
   ) {
     let profilePictureUrl = undefined;
     if (file) {
-      const uploadResult = await this.cloudinaryService.uploadFile(file).catch((err) => {
-        throw new BadRequestException(`Failed to upload photo: ${err.message || err}`);
-      });
+      const uploadResult = await this.cloudinaryService
+        .uploadFile(file)
+        .catch((err) => {
+          throw new BadRequestException(
+            `Failed to upload photo: ${err.message || err}`,
+          );
+        });
       profilePictureUrl = uploadResult.secure_url;
     }
 

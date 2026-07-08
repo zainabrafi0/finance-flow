@@ -154,15 +154,17 @@ export class TransactionsService {
 
     try {
       if (dto.type === TransactionType.EXPENSE) {
-        const txDate = dto.transactionDate ? new Date(dto.transactionDate) : new Date();
+        const txDate = dto.transactionDate
+          ? new Date(dto.transactionDate)
+          : new Date();
         const month = String(txDate.getMonth() + 1).padStart(2, '0');
         const year = txDate.getFullYear();
-        
+
         const budget: any = await this.walletModel.db.model('Budget').findOne({
           userId: userObjId,
           category: dto.category,
           month,
-          year
+          year,
         });
 
         if (budget) {
@@ -175,15 +177,15 @@ export class TransactionsService {
                 userId: userObjId,
                 type: 'expense',
                 category: dto.category,
-                transactionDate: { $gte: startDate, $lte: endDate }
-              }
+                transactionDate: { $gte: startDate, $lte: endDate },
+              },
             },
             {
               $group: {
                 _id: null,
-                total: { $sum: '$amount' }
-              }
-            }
+                total: { $sum: '$amount' },
+              },
+            },
           ]);
 
           const totalSpent = spentData[0]?.total || 0;
@@ -194,20 +196,23 @@ export class TransactionsService {
               category: dto.category,
               limit: budget.limit,
               spent: totalSpent,
-              message: `You have exceeded your monthly budget limit for ${dto.category}! (Spent ${totalSpent}/${budget.limit})`
+              message: `You have exceeded your monthly budget limit for ${dto.category}! (Spent ${totalSpent}/${budget.limit})`,
             });
           } else if (percent >= 80) {
             this.notificationsGateway.sendToUser(userId, 'budget_warning', {
               category: dto.category,
               limit: budget.limit,
               spent: totalSpent,
-              message: `You have used ${Math.round(percent)}% of your monthly budget for ${dto.category}. (Spent ${totalSpent}/${budget.limit})`
+              message: `You have used ${Math.round(percent)}% of your monthly budget for ${dto.category}. (Spent ${totalSpent}/${budget.limit})`,
             });
           }
         }
       }
     } catch (budgetErr) {
-      this.logger.error('Failed to run budget alerts via WebSockets', budgetErr);
+      this.logger.error(
+        'Failed to run budget alerts via WebSockets',
+        budgetErr,
+      );
     }
 
     await this.cacheManager.del(`dashboard_summary_${userId}`);
@@ -255,11 +260,15 @@ export class TransactionsService {
     if (query.startDate || query.endDate) {
       filter.transactionDate = {};
       if (query.startDate) {
-        const start = query.startDate.includes('T') ? query.startDate : `${query.startDate}T00:00:00.000Z`;
+        const start = query.startDate.includes('T')
+          ? query.startDate
+          : `${query.startDate}T00:00:00.000Z`;
         filter.transactionDate.$gte = new Date(start);
       }
       if (query.endDate) {
-        const end = query.endDate.includes('T') ? query.endDate : `${query.endDate}T23:59:59.999Z`;
+        const end = query.endDate.includes('T')
+          ? query.endDate
+          : `${query.endDate}T23:59:59.999Z`;
         filter.transactionDate.$lte = new Date(end);
       }
     }

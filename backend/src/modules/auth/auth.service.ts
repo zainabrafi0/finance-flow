@@ -112,7 +112,9 @@ export class AuthService {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(dto.newPassword, salt);
 
-    await this.usersService.updateProfile(user._id.toString(), { passwordHash });
+    await this.usersService.updateProfile(user._id.toString(), {
+      passwordHash,
+    });
 
     await this.otpModel.deleteMany({ email });
 
@@ -164,7 +166,11 @@ export class AuthService {
   }
 
   private async generateTokens(user: any) {
-    const payload = { sub: user._id.toString(), email: user.email, role: user.role };
+    const payload = {
+      sub: user._id.toString(),
+      email: user.email,
+      role: user.role,
+    };
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
@@ -181,7 +187,10 @@ export class AuthService {
 
     const salt = await bcrypt.genSalt(10);
     const hashedRefreshToken = await bcrypt.hash(refreshToken, salt);
-    await this.usersService.updateRefreshToken(user._id.toString(), hashedRefreshToken);
+    await this.usersService.updateRefreshToken(
+      user._id.toString(),
+      hashedRefreshToken,
+    );
 
     return {
       accessToken,

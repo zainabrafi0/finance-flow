@@ -31,13 +31,22 @@ export class UsersService {
 
   async updateProfile(
     userId: string,
-    profileData: { firstName?: string; lastName?: string; profilePictureUrl?: string | null; passwordHash?: string },
+    profileData: {
+      firstName?: string;
+      lastName?: string;
+      profilePictureUrl?: string | null;
+      passwordHash?: string;
+    },
   ): Promise<User | null> {
     const updatePayload: any = {};
-    if (profileData.firstName !== undefined) updatePayload.firstName = profileData.firstName;
-    if (profileData.lastName !== undefined) updatePayload.lastName = profileData.lastName;
-    if (profileData.profilePictureUrl !== undefined) updatePayload.profilePictureUrl = profileData.profilePictureUrl;
-    if (profileData.passwordHash !== undefined) updatePayload.passwordHash = profileData.passwordHash;
+    if (profileData.firstName !== undefined)
+      updatePayload.firstName = profileData.firstName;
+    if (profileData.lastName !== undefined)
+      updatePayload.lastName = profileData.lastName;
+    if (profileData.profilePictureUrl !== undefined)
+      updatePayload.profilePictureUrl = profileData.profilePictureUrl;
+    if (profileData.passwordHash !== undefined)
+      updatePayload.passwordHash = profileData.passwordHash;
 
     return this.userModel
       .findByIdAndUpdate(userId, { $set: updatePayload }, { new: true })

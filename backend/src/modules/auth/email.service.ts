@@ -19,9 +19,15 @@ export class EmailService {
     });
   }
 
-  async sendOtpEmail(email: string, otp: string, purpose: 'registration' | 'reset-password'): Promise<void> {
+  async sendOtpEmail(
+    email: string,
+    otp: string,
+    purpose: 'registration' | 'reset-password',
+  ): Promise<void> {
     const isReg = purpose === 'registration';
-    const subject = isReg ? 'FinanceFlow Account Verification' : 'FinanceFlow Password Reset';
+    const subject = isReg
+      ? 'FinanceFlow Account Verification'
+      : 'FinanceFlow Password Reset';
     const title = isReg ? 'Verify Your Account' : 'Reset Your Password';
     const instruction = isReg
       ? 'Thank you for choosing FinanceFlow. Please use the following One-Time Password (OTP) to complete your registration. This code is valid for 5 minutes.'
@@ -57,7 +63,9 @@ export class EmailService {
       this.logger.log(`Successfully sent OTP email to: ${email}`);
     } catch (error) {
       this.logger.error(`Failed to send OTP email to ${email}`, error);
-      throw new Error('Failed to send verification email. Please check your configuration.');
+      throw new Error(
+        'Failed to send verification email. Please check your configuration.',
+      );
     }
   }
 }

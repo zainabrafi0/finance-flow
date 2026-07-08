@@ -41,7 +41,10 @@ import { AuditModule } from './modules/audit/audit.module';
             });
             return { store } as any;
           } catch (err) {
-            console.error('Failed to connect to Redis. Falling back to memory cache.', err);
+            console.error(
+              'Failed to connect to Redis. Falling back to memory cache.',
+              err,
+            );
           }
         }
         return {
