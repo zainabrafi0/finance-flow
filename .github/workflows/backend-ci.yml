@@ -172,8 +172,8 @@ jobs:
             # Install all dependencies (required to compile TypeScript & NestJS CLI)
             npm ci
             
-            # Build the NestJS project
-            npm run build
+            # Build the NestJS project with memory limits for low-RAM instances
+            NODE_OPTIONS="--max-old-space-size=450" npm run build
             
             # Remove development dependencies to save space
             npm prune --omit=dev
