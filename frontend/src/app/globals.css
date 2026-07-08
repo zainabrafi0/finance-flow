@@ -1,0 +1,46 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* High-readability typography */
+  --color-finance-text-primary: #1E293B;
+  --color-finance-text-secondary: #64748B;
+  
+  /* Soft pastel palette */
+  --color-finance-pastel-mint: #D4F0E2;
+  --color-finance-pastel-lavender: #E9E4F0;
+  --color-finance-pastel-peach: #FADCB3;
+  --color-finance-pastel-blue: #DCEBF7;
+  
+  /* High-contrast branding anchors */
+  --color-finance-brand-teal: #0D9488;
+  --color-finance-brand-purple: #7C3AED;
+
+  /* Custom mesh gradient and glass shadow */
+  --background-image-mesh-gradient: linear-gradient(135deg, #F8FAFC 0%, #E9E4F0 40%, #DCEBF7 70%, #D4F0E2 100%);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+}
+
+@layer components {
+  /* Global Glassmorphism utility layer */
+  .glass-card {
+    @apply bg-white/40 backdrop-blur-md border border-white/50 shadow-glass rounded-2xl;
+  }
+  
+  .glass-input {
+    @apply bg-white/50 backdrop-blur-sm border border-white/60 focus:border-finance-brand-purple/50 focus:ring-2 focus:ring-finance-brand-purple/20 outline-none transition-all rounded-xl;
+  }
+}
+
+@keyframes landing-pan {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(24px, 24px, 0); }
+}
+
+.landing-grid {
+  background-image:
+    linear-gradient(rgba(8, 145, 178, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.16) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: landing-pan 12s linear infinite;
+}
