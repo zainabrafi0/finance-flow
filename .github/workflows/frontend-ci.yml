@@ -13,20 +13,8 @@ on:
       - '.github/workflows/frontend-ci.yml'
 
 jobs:
-  security-audit:
-    name: Security Vulnerability Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Run Security Audit
-        run: |
-          cd frontend
-          npm audit --audit-level=critical || true
-
-  lint-check:
-    name: Next.js Lint Analysis
+  security-and-dependencies:
+    name: Security & Dependency Verification
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -44,10 +32,54 @@ jobs:
           cd frontend
           npm ci
 
+      - name: Run Security Audit
+        run: |
+          cd frontend
+          npm audit --audit-level=critical || true
+
+      - name: Validate Unused & Missing Dependencies
+        run: |
+          cd frontend
+          npx depcheck --ignores="postcss,tailwindcss,lucide-react,@tailwindcss/postcss" || true
+
+  lint-format-types:
+    name: Lint, Format, Types & Exports Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run Prettier Formatting Check
+        run: |
+          cd frontend
+          npx prettier --check "src/**/*.{ts,tsx,css,json}" || true
+
       - name: Run Next.js Lint Checks
         run: |
           cd frontend
           npm run lint || true
+
+      - name: Strict TypeScript Compilation Typecheck
+        run: |
+          cd frontend
+          npx tsc --noEmit
+
+      - name: Identify Unused Exports
+        run: |
+          cd frontend
+          npx ts-prune || true
 
   compile-and-docker:
     name: Next.js Compile & Docker Build Check

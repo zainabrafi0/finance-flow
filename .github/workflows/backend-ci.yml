@@ -13,20 +13,8 @@ on:
       - '.github/workflows/backend-ci.yml'
 
 jobs:
-  security-audit:
-    name: Security Vulnerability Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Run Security Audit
-        run: |
-          cd backend
-          npm audit --audit-level=critical || true
-
-  lint-and-format:
-    name: Lint & Code Style Check
+  security-and-dependencies:
+    name: Security & Dependency Verification
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -44,15 +32,54 @@ jobs:
           cd backend
           npm ci
 
-      - name: Run Style Formatting Check
+      - name: Run Security Audit
         run: |
           cd backend
-          npx prettier --check "src/**/*.ts" "test/**/*.ts" || true
+          npm audit --audit-level=critical || true
 
-      - name: Run ESLint Analyzer
+      - name: Validate Unused & Missing Dependencies
+        run: |
+          cd backend
+          npx depcheck --ignores="jest,ts-jest,prettier,eslint,@nestjs/cli,ts-node,typescript,rimraf" || true
+
+  lint-format-types:
+    name: Lint, Format, Types & Exports Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install Dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Run Prettier Formatting Check
+        run: |
+          cd backend
+          npx prettier --check "src/**/*.ts" "test/**/*.ts"
+
+      - name: Run ESLint Code Quality Checks
         run: |
           cd backend
           npm run lint || true
+
+      - name: Strict TypeScript Compilation Typecheck
+        run: |
+          cd backend
+          npx tsc --noEmit
+
+      - name: Identify Unused Exports
+        run: |
+          cd backend
+          npx ts-prune || true
 
   unit-testing:
     name: Unit Tests & Code Coverage
