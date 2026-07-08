@@ -1,0 +1,32 @@
+# FINANCEFLOW DEVOPS PIPELINES SUMMARY
+
+This file summarizes the CI/CD and checking mechanisms implemented for the FinanceFlow Monorepo.
+
+---
+
+## 1. Local Pre-Push Git Hook
+* **File Location**: `.git/hooks/pre-push`
+* **Purpose**: Prevents developers from pushing bad code to GitHub.
+* **Mechanism**: 
+  * Automatically intercepts `git push`.
+  * Instantly runs lint checks and build verification steps inside both `backend/` and `frontend/` folders.
+  * If linting fails or compilation errors are found, the push is immediately cancelled (`exit 1`).
+  * If all checks pass, it proceeds to push.
+
+---
+
+## 2. GitHub Actions Workflows (PR & Main Protection)
+* **Backend CI/CD**:
+  * **File Location**: `.github/workflows/backend-ci.yml`
+  * **Triggers**: Triggers automatically on any push or pull request to `main` modifying files in the `backend/` directory.
+  * **Steps**: checks out code, sets up Node.js v18 with npm cache, installs clean dependencies via `npm ci`, runs code linting (`npm run lint`), and builds the NestJS application (`npm run build`).
+
+* **Frontend CI/CD**:
+  * **File Location**: `.github/workflows/frontend-ci.yml`
+  * **Triggers**: Triggers automatically on any push or pull request to `main` modifying files in the `frontend/` directory.
+  * **Steps**: checks out code, sets up Node.js v18 with npm cache, installs clean dependencies via `npm ci`, runs code linting (`npm run lint`), and builds the Next.js application (`npm run build`).
+
+---
+
+## 3. Production Readiness Checks
+* Combined with branch protection rules in GitHub, these Actions prevent pull requests from merging into `main` (and therefore auto-deploying to production) if any test, lint, or build task fails.
