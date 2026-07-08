@@ -169,11 +169,14 @@ jobs:
             # Navigate into the backend directory
             cd backend || exit 1
             
-            # Install production dependencies only
-            npm ci --omit=dev
+            # Install all dependencies (required to compile TypeScript & NestJS CLI)
+            npm ci
             
             # Build the NestJS project
             npm run build
+            
+            # Remove development dependencies to save space
+            npm prune --omit=dev
             
             # Inject Environment Secrets securely
             cat <<EOF > .env
