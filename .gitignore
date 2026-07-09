@@ -53,6 +53,7 @@ temp/
 # DevOps summary
 done.txt
 aws_actions.txt
+todo.txt
 
 # Security keys & certificates
 finance-flow-key.pem
