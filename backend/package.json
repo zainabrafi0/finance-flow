@@ -41,6 +41,7 @@
     "cloudinary": "^2.10.0",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
+    "express-basic-auth": "^1.2.1",
     "express-rate-limit": "^8.5.2",
     "helmet": "^8.2.0",
     "joi": "^18.2.3",

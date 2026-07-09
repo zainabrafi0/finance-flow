@@ -62,6 +62,17 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   // 6. Swagger API Documentation
+  const basicAuth = require('express-basic-auth');
+  app.use(
+    '/api/docs',
+    basicAuth({
+      challenge: true,
+      users: {
+        admin: process.env.SWAGGER_PASSWORD || 'FinanceFlow2026!',
+      },
+    }),
+  );
+
   const config = new DocumentBuilder()
     .setTitle('FinanceFlow API')
     .setDescription('The core API documentation for the FinanceFlow platform.')

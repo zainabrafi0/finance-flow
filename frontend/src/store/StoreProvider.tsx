@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { setCredentials } from './authSlice';
 import { setNotifications } from './notificationSlice';
 import { setTheme } from './themeSlice';
+import { Toaster } from 'react-hot-toast';
 
 export default function StoreProvider({
   children,
@@ -43,5 +44,10 @@ export default function StoreProvider({
     return unsubscribe;
   }, []);
 
-  return <Provider store={store}>{children}</Provider>;
+  return (
+    <Provider store={store}>
+      {children}
+      <Toaster position="top-right" reverseOrder={false} />
+    </Provider>
+  );
 }
