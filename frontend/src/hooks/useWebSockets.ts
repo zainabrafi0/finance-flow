@@ -27,7 +27,7 @@ export const useWebSockets = () => {
     });
 
     socket.on('connect', () => {
-      console.log('Connected to WebSockets server for user', user.id);
+      console.log('Connected');
     });
 
     socket.on('balance_update', (data: { walletId: string; newBalance: number }) => {

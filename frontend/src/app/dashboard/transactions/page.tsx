@@ -62,6 +62,11 @@ function TransactionsPageContent() {
   const [isMutating, setIsMutating] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  useEffect(() => {
+    setSearchTerm(searchParams.get('q') || '');
+    setWalletFilter(searchParams.get('walletId') || '');
+    setCategoryFilter(searchParams.get('category') || '');
+  }, [searchParams]);
 
   useEffect(() => {
     setCurrentPage(1);

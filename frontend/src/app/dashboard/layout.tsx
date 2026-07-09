@@ -54,7 +54,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const handleGlobalSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const query = globalSearch.trim();
-    if (!query) return;
+    if (!query) {
+      router.push('/dashboard/transactions');
+      return;
+    }
     router.push(`/dashboard/transactions?q=${encodeURIComponent(query)}`);
   };
 
