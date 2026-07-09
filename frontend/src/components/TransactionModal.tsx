@@ -78,50 +78,50 @@ export default function TransactionModal({ isOpen, onClose }: TransactionModalPr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border border-transparent dark:border-slate-800">
         
         {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b border-slate-100">
-          <h2 className="text-xl font-bold text-slate-800">Add Transaction</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors">
+        <div className="flex justify-between items-center p-6 border-b border-slate-100 dark:border-slate-800">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-white">Add Transaction</h2>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
             <X size={20} />
           </button>
         </div>
-
+ 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-1.5">Description</label>
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
             <input
               type="text"
               required
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="e.g. Whole Foods Market"
-              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+              className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
             />
           </div>
-
+ 
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-1.5">Account / Wallet</label>
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1.5">Account / Wallet</label>
             <select
               required
               value={walletId}
               onChange={(e) => setWalletId(e.target.value)}
-              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none"
+              className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none"
             >
-              <option value="" disabled>Select a wallet...</option>
+              <option value="" disabled className="dark:bg-slate-950">Select a wallet...</option>
               {wallets.map(w => (
-                <option key={w._id} value={w._id}>{w.name} ({formatCurrency(w.balance, w.currency)})</option>
+                <option key={w._id} value={w._id} className="dark:bg-slate-950">{w.name} ({formatCurrency(w.balance, w.currency)})</option>
               ))}
-              <option value="others">Others</option>
+              <option value="others" className="dark:bg-slate-950">Others</option>
             </select>
           </div>
-
+ 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1.5">
+              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Amount {selectedCurrency ? `(${selectedCurrency})` : ''}
               </label>
               <input
@@ -131,48 +131,48 @@ export default function TransactionModal({ isOpen, onClose }: TransactionModalPr
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1.5">Transaction Type</label>
-              <div className="flex bg-slate-100 p-1 rounded-xl">
+              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1.5">Transaction Type</label>
+              <div className="flex bg-slate-100 dark:bg-slate-950 p-1 rounded-xl">
                 <button
                   type="button"
                   onClick={() => setType('income')}
-                  className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors ${type === 'income' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors ${type === 'income' ? 'bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
                 >
                   Income
                 </button>
                 <button
                   type="button"
                   onClick={() => setType('expense')}
-                  className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors ${type === 'expense' ? 'bg-white text-red-500 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                  className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors ${type === 'expense' ? 'bg-white dark:bg-slate-800 text-red-500 dark:text-red-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
                 >
                   Expense
                 </button>
               </div>
             </div>
           </div>
-
+ 
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-1.5">Category</label>
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1.5">Category</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none"
+              className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none"
             >
-              <option value="Groceries">Groceries</option>
-              <option value="Income">Salary / Income</option>
-              <option value="Utilities">Utilities</option>
-              <option value="Housing">Housing</option>
-              <option value="Transportation">Transportation</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Others">Others</option>
+              <option value="Groceries" className="dark:bg-slate-950">Groceries</option>
+              <option value="Income" className="dark:bg-slate-950">Salary / Income</option>
+              <option value="Utilities" className="dark:bg-slate-950">Utilities</option>
+              <option value="Housing" className="dark:bg-slate-950">Housing</option>
+              <option value="Transportation" className="dark:bg-slate-950">Transportation</option>
+              <option value="Entertainment" className="dark:bg-slate-950">Entertainment</option>
+              <option value="Others" className="dark:bg-slate-950">Others</option>
             </select>
           </div>
-
+ 
           <button
             type="submit"
             disabled={isLoading || wallets.length === 0}
