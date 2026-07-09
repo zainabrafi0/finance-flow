@@ -174,7 +174,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* Sidebar Bottom Actions */}
-        <div className="p-4 space-y-2 border-t border-slate-100">
+        <div className="p-4 space-y-2 border-t border-slate-100 dark:border-slate-800">
           <button 
           onClick={() => setIsModalOpen(true)}
           className="w-full flex items-center justify-center gap-2 bg-black text-white px-4 py-3 rounded-xl text-sm font-bold shadow-lg hover:bg-slate-800 transition-colors"
@@ -183,14 +183,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
              Add Transaction
          </button>
           
-          <button className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-xl transition-colors">
-            <HelpCircle size={18} className="text-slate-400" />
-            Help Center
-          </button>
-          
           <button 
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors"
           >
             <LogOut size={18} className="text-slate-400" />
             Logout
