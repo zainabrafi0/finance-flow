@@ -16,10 +16,24 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(helmet());
   app.enableCors({
-    origin: [
-      process.env.FRONTEND_URL || 'http://localhost:3000',
-      'http://127.0.0.1:3000',
-    ],
+    origin: (origin, callback) => {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+      const allowedOrigins = [
+        process.env.FRONTEND_URL,
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+      ].filter(Boolean);
+
+      const isAllowed = allowedOrigins.includes(origin) || origin.endsWith('.vercel.app');
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
+      }
+    },
     credentials: true,
   });
 
