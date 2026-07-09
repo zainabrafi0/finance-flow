@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { TransactionService } from '../services/transaction.service';
 import { WalletService } from '../services/wallet.service';
@@ -38,7 +39,10 @@ export default function TransactionModal({ isOpen, onClose }: TransactionModalPr
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!walletId) return alert('Please select a wallet');
+    if (!walletId) {
+      toast.error('Please select a wallet');
+      return;
+    }
     
     setIsLoading(true);
     try {
@@ -60,13 +64,13 @@ export default function TransactionModal({ isOpen, onClose }: TransactionModalPr
         message: `${description || category} for ${Number(amount).toLocaleString()} was added successfully.`,
       }));
 
-      // 3. Reset form and close
+      toast.success('Transaction saved successfully!');
       setDescription('');
       setAmount('');
       onClose();
     } catch (error) {
       console.error('Failed to create transaction', error);
-      alert('Failed to save transaction.');
+      toast.error('Failed to save transaction.');
     } finally {
       setIsLoading(false);
     }

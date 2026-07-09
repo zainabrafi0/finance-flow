@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useSearchParams } from 'next/navigation';
 import { TransactionService } from '../../../services/transaction.service';
 import { WalletService } from '../../../services/wallet.service';
@@ -183,9 +184,10 @@ function TransactionsPageContent() {
     setIsMutating(true);
     try {
       await dispatch(updateTransaction({ transactionId: editingTx._id, data: editForm })).unwrap();
+      toast.success('Transaction updated successfully!');
       setEditingTx(null);
     } catch (error: any) {
-      alert(error || 'Failed to edit transaction.');
+      toast.error(error || 'Failed to edit transaction.');
     } finally {
       setIsMutating(false);
     }
@@ -197,10 +199,11 @@ function TransactionsPageContent() {
     setIsMutating(true);
     try {
       await dispatch(deleteTransaction({ transactionId: deletingTx._id, password: deletePassword })).unwrap();
+      toast.success('Transaction deleted successfully!');
       setDeletingTx(null);
       setDeletePassword('');
     } catch (error: any) {
-      alert(error || 'Failed to delete transaction.');
+      toast.error(error || 'Failed to delete transaction.');
     } finally {
       setIsMutating(false);
     }

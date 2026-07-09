@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useAppSelector } from '../../../store/hooks';
 import { RecurringService, RecurringTransaction } from '../../../services/recurring.service';
 import { WalletService } from '../../../services/wallet.service';
@@ -91,8 +92,9 @@ export default function RecurringPage() {
       setItems((prev) =>
         prev.map((item) => (item._id === id ? { ...item, isActive: !currentStatus } : item))
       );
+      toast.success('Status updated successfully!');
     } catch (err) {
-      alert('Failed to toggle status.');
+      toast.error('Failed to toggle status.');
     }
   };
 
@@ -101,15 +103,16 @@ export default function RecurringPage() {
     try {
       await RecurringService.delete(id);
       setItems((prev) => prev.filter((item) => item._id !== id));
+      toast.success('Template deleted successfully!');
     } catch (err) {
-      alert('Failed to delete item.');
+      toast.error('Failed to delete item.');
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.walletId || !form.amount || !form.description || !form.nextRunDate) {
-      alert('Please fill in all fields.');
+      toast.error('Please fill in all fields.');
       return;
     }
     setIsSaving(true);
@@ -130,9 +133,10 @@ export default function RecurringPage() {
         description: '',
         nextRunDate: '',
       }));
+      toast.success('Recurring transaction template created!');
       await loadData();
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to create recurring transaction.');
+      toast.error(err.response?.data?.message || 'Failed to create recurring transaction.');
     } finally {
       setIsSaving(false);
     }

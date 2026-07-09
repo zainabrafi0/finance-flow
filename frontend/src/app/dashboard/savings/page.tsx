@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 import { SavingsService } from '../../../services/savings.service';
 import { WalletService } from '../../../services/wallet.service';
@@ -71,10 +72,11 @@ export default function SavingsPage() {
       if (updatedGoals.length > 0 && !selectedGoalId) {
         setSelectedGoalId(updatedGoals[0]._id);
       }
+      toast.success('Savings goal created successfully!');
       setNewGoal({ name: '', description: '', targetAmount: '', targetDate: '' });
       setShowNewGoalForm(false);
     } catch (err) {
-      alert('Failed to create goal');
+      toast.error('Failed to create goal');
     } finally {
       setIsProcessing(false);
     }
@@ -83,7 +85,7 @@ export default function SavingsPage() {
   const handleDeposit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedGoalId || selectedGoalId === 'others') {
-      alert('Please select a valid savings goal.');
+      toast.error('Please select a valid savings goal.');
       return;
     }
     
@@ -107,9 +109,9 @@ export default function SavingsPage() {
       dispatch(setWallets(updatedWallets));
       
       setDepositAmount('');
-      alert('Deposit Successful!');
+      toast.success('Deposit Successful!');
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to deposit funds');
+      toast.error(err.response?.data?.message || 'Failed to deposit funds');
     } finally {
       setIsProcessing(false);
     }

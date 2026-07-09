@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import StoreProvider from '../store/StoreProvider';
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   title: 'FinanceFlow',
@@ -16,7 +17,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {/* Everything inside here now has access to Redux! */}
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          {children}
+          <Toaster position="top-right" reverseOrder={false} />
+        </StoreProvider>
       </body>
     </html>
   );

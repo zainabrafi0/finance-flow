@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 import { WalletService } from '../../../services/wallet.service';
 import { TransactionService, Transaction } from '../../../services/transaction.service';
@@ -168,11 +169,11 @@ export default function WalletsPage() {
   const handleCreateWallet = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLettersOnlyName(newWallet.name)) {
-      alert('Account name can contain letters, spaces, apostrophes, dots, or hyphens only.');
+      toast.error('Account name can contain letters, spaces, apostrophes, dots, or hyphens only.');
       return;
     }
     if (!isValidAccountIdentifier(newWallet.accountNumber, newWallet.walletType)) {
-      alert('Please enter a valid account number, IBAN, or wallet identifier.');
+      toast.error('Please enter a valid account number, IBAN, or wallet identifier.');
       return;
     }
     setIsSubmitting(true);
@@ -192,11 +193,12 @@ export default function WalletsPage() {
         title: 'Wallet created',
         message: `${newWallet.name} was added to your accounts.`,
       }));
+      toast.success('Wallet created successfully!');
       setNewWallet({ name: '', balance: '', currency: 'PKR', walletType: 'Manual/Cash', accountSubType: 'Cash', bankName: 'Meezan Bank', accountNumber: '', creditLimit: '' });
       setShowCreateModal(false);
       await fetchWallets(); 
     } catch (error) {
-      alert('Failed to create wallet.');
+      toast.error('Failed to create wallet.');
     } finally {
       setIsSubmitting(false);
     }
@@ -210,16 +212,18 @@ export default function WalletsPage() {
         setSelectedWalletId(null);
         setWalletTransactions([]);
       }
+      toast.success('Wallet deleted successfully!');
       await fetchWallets();
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Failed to delete wallet.');
+      toast.error(error.response?.data?.message || 'Failed to delete wallet.');
     }
   };
 
   const handleTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
     if (transferForm.sourceWalletId === transferForm.destinationWalletId) {
-      return alert('Cannot transfer to the same wallet.');
+      toast.error('Cannot transfer to the same wallet.');
+      return;
     }
     
     setIsTransferring(true);
@@ -239,9 +243,9 @@ export default function WalletsPage() {
       await fetchWallets(); 
       if (selectedWalletId) handleSelectWallet(selectedWalletId);
       
-      alert('Transfer successful!');
+      toast.success('Transfer successful!');
     } catch (error: any) {
-      alert(error.response?.data?.message || 'Transfer failed. Check balance or limits.');
+      toast.error(error.response?.data?.message || 'Transfer failed. Check balance or limits.');
     } finally {
       setIsTransferring(false);
     }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import TransactionModal from '../../components/TransactionModal';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { logout, setCredentials } from '../../store/authSlice';
@@ -109,13 +110,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       // Update localStorage manually just in case
       localStorage.setItem('user', JSON.stringify(res.user));
 
-      alert('Profile updated successfully!');
+      toast.success('Profile updated successfully!');
       setShowProfileModal(false);
       setProfileFile(null);
       setProfilePreview('');
     } catch (err: any) {
       console.error(err);
-      alert('Failed to update profile.');
+      toast.error('Failed to update profile.');
     } finally {
       setIsSavingProfile(false);
     }

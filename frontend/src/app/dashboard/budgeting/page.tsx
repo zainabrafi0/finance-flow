@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../store/hooks';
 import { BudgetService } from '../../../services/budget.service';
@@ -106,12 +107,13 @@ export default function BudgetingPage() {
         title: 'Budget created',
         message: `${newBudget.category} budget created with a limit of ${Number(newBudget.limit).toLocaleString()} for ${monthDisplay}.`,
       }));
+      toast.success('Budget saved successfully!');
       setNewBudget({ category: 'Groceries', limit: '' });
       setShowBudgetForm(false);
       await refreshBudgets();
     } catch (error) {
       console.error('Failed to save budget', error);
-      alert('Failed to save budget.');
+      toast.error('Failed to save budget.');
     } finally {
       setIsSavingBudget(false);
     }
@@ -126,10 +128,11 @@ export default function BudgetingPage() {
         title: 'Budget deleted',
         message: 'The budget has been successfully deleted.',
       }));
+      toast.success('Budget deleted successfully!');
       await refreshBudgets();
     } catch (error) {
       console.error('Failed to delete budget', error);
-      alert('Failed to delete budget.');
+      toast.error('Failed to delete budget.');
     }
   };
 
